@@ -6,4 +6,4 @@ COPY /app .
 
 RUN gradle installDist
 
-CMD /Users/uliaegorycheva/java-project-72/app
+CMD ./build/install/app/bin/app
