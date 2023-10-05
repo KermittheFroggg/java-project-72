@@ -2,7 +2,7 @@ plugins {
     id("java")
     application
     id("com.github.johnrengelman.shadow") version "8.1.1"
-
+    id("io.freefair.lombok") version "8.3"
 }
 
 application {
@@ -17,11 +17,14 @@ repositories {
 }
 
 dependencies {
-    testImplementation(platform("org.junit:junit-bom:5.9.1"))
-    testImplementation("org.junit.jupiter:junit-jupiter")
+    testImplementation(platform("org.junit:junit-bom:5.9.2"))
+    testImplementation("org.junit.jupiter:junit-jupiter:5.9.2")
 
     implementation("io.javalin:javalin:5.6.1")
     implementation("org.slf4j:slf4j-simple:2.0.7")
+
+    implementation("com.h2database:h2:2.2.220")
+    implementation("com.zaxxer:HikariCP:5.0.1")
 }
 
 tasks.test {
