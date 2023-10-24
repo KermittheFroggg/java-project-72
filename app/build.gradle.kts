@@ -17,6 +17,7 @@ repositories {
 }
 
 dependencies {
+    implementation("commons-lang:commons-lang:2.6")
     testImplementation(platform("org.junit:junit-bom:5.9.2"))
     testImplementation("org.junit.jupiter:junit-jupiter:5.9.2")
 
@@ -28,6 +29,12 @@ dependencies {
     implementation("com.zaxxer:HikariCP:5.0.1")
 
     implementation("gg.jte:jte:3.0.1")
+
+    implementation ("com.konghq:unirest-java:3.11.09")
+    implementation("com.konghq:unirest-java-parent:4.0.0-RC7")
+    implementation ("com.fasterxml.jackson.core:jackson-databind:2.15.2")
+    implementation ("org.jsoup:jsoup:1.16.1")
+
 }
 
 tasks.test {
