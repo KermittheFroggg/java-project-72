@@ -4,6 +4,7 @@
 @param UrlCheckPage page
 
 @template.layouts.page(
+page = page,
 content = @`
     <main class="flex-grow-1">
         <section>

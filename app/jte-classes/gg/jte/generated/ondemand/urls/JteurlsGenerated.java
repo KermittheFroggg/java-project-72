@@ -4,7 +4,7 @@ import hexlet.code.dto.urls.UrlsPage;
 import java.text.SimpleDateFormat;
 public final class JteurlsGenerated {
 	public static final String JTE_NAME = "urls/urls.jte";
-	public static final int[] JTE_LINE_INFO = {0,0,1,2,3,3,3,5,5,7,7,22,22,24,24,24,26,26,26,26,26,26,26,26,26,26,26,28,28,30,30,30,32,32,32,33,33,36,36,38,38,45,45,45,45,48,48,48,48,48,48,48,51,51,51,51,58,58,58};
+	public static final int[] JTE_LINE_INFO = {0,0,1,2,3,3,3,5,5,8,8,23,23,25,25,25,27,27,27,27,27,27,27,27,27,27,27,29,29,31,31,31,33,33,33,34,34,37,37,39,39,46,46,46,46,49,49,49,49,49,49,49,52,52,52,52,59,59,59};
 	public static void render(gg.jte.html.HtmlTemplateOutput jteOutput, gg.jte.html.HtmlInterceptor jteHtmlInterceptor, UrlsPage page) {
 		jteOutput.writeContent("\n");
 		gg.jte.generated.ondemand.layouts.JtepageGenerated.render(jteOutput, jteHtmlInterceptor, new gg.jte.html.HtmlContent() {
@@ -56,7 +56,7 @@ public final class JteurlsGenerated {
 				jteOutput.setContext("a", null);
 				jteOutput.writeContent("\">Next</a>\n                        </li>\n                    </ul>\n                </nav>\n            </div>\n        </section>\n    </main>\n");
 			}
-		}, null);
+		}, page);
 	}
 	public static void renderMap(gg.jte.html.HtmlTemplateOutput jteOutput, gg.jte.html.HtmlInterceptor jteHtmlInterceptor, java.util.Map<String, Object> params) {
 		UrlsPage page = (UrlsPage)params.get("page");

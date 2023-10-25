@@ -1,6 +1,7 @@
 package hexlet.code;
 
 import hexlet.code.controller.UrlController;
+import hexlet.code.dto.urls.BasePage;
 import hexlet.code.repository.BaseRepository;
 
 import java.io.BufferedReader;
@@ -8,6 +9,7 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.sql.SQLException;
+import java.util.Collections;
 import java.util.stream.Collectors;
 
 import com.zaxxer.hikari.HikariConfig;
@@ -46,7 +48,7 @@ public class App {
         InputStream is = App.class.getClassLoader().getResourceAsStream(fileName);
         if (is != null) {
             BufferedReader reader = new BufferedReader(new InputStreamReader(is));
-            return (String) reader.lines().collect(Collectors.joining(System.lineSeparator()));
+            return reader.lines().collect(Collectors.joining(System.lineSeparator()));
         } else {
             throw new RuntimeException("resource not found");
         }
@@ -71,7 +73,9 @@ public class App {
         });
 
         app.get(NamedRoutes.root(), ctx -> {
-            ctx.render("index.jte");
+            var page = new BasePage();
+            page.setFlash(ctx.consumeSessionAttribute("flash"));
+            ctx.render("index.jte", Collections.singletonMap("page", page));
         });
         app.post(NamedRoutes.urls(), UrlController::create);
         app.get(NamedRoutes.urls(), UrlController::index);

@@ -1,8 +1,9 @@
 @import hexlet.code.utils.NamedRoutes
-@import hexlet.code.dto.urls.UrlsPage
-@param UrlsPage page
+@import hexlet.code.dto.urls.BasePage
+@param BasePage page
 
 @template.layouts.page(
+page = page,
 content = @`
     <main class="flex-grow-1">
         <section>

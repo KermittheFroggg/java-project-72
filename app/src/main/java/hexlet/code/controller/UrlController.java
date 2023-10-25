@@ -49,7 +49,6 @@ public class UrlController {
         }
         UrlsPage page = new UrlsPage(urls, pageNumber);
         page.setFlash(ctx.consumeSessionAttribute("flash"));
-        page.setFlashType(ctx.consumeSessionAttribute("flash-type"));
         ctx.render("urls/urls.jte", Collections.singletonMap("page", page));
     }
 
@@ -59,7 +58,7 @@ public class UrlController {
             URL urlBeforeChecking = new URL(name);
             String urlAfterCheking = urlBeforeChecking.getProtocol() + "://" + urlBeforeChecking.getAuthority();
             if (UrlRepository.findByName(urlAfterCheking).isPresent()) {
-                ctx.sessionAttribute("flash", "Ошибка, URL уже добавлен!");
+                ctx.sessionAttribute("flash", "Страница уже существует");
                 ctx.sessionAttribute("flash-type", "error");
                 ctx.redirect(NamedRoutes.root());
                 return;
@@ -68,11 +67,13 @@ public class UrlController {
             Timestamp createdAt = new Timestamp(date.getTime());
             Url url = new Url(urlAfterCheking, createdAt);
             UrlRepository.save(url);
-            ctx.sessionAttribute("flash", "URL добавлен!");
+            ctx.sessionAttribute("flash", "Страница успешно добавлена");
             ctx.sessionAttribute("flash-type", "success");
             ctx.redirect(NamedRoutes.urls());
         } catch (MalformedURLException e) {
-            throw new RuntimeException(e);
+            ctx.sessionAttribute("flash", "Некорректный URL");
+            ctx.sessionAttribute("flash-type", "error");
+            ctx.redirect(NamedRoutes.root());
         }
     }
 
@@ -86,7 +87,8 @@ public class UrlController {
                 .toList();
         UrlCheckPage page = new UrlCheckPage(urlChecks, url);
         page.setFlash(ctx.consumeSessionAttribute("flash"));
-        page.setFlashType(ctx.consumeSessionAttribute("flash-type"));
+        System.out.println("\n\n\n???????????"+page.getFlash());
+
         ctx.render("urls/url.jte", Collections.singletonMap("page", page));
     }
 

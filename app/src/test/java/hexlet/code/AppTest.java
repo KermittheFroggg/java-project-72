@@ -57,7 +57,7 @@ public class AppTest {
         JavalinTest.test(app, (server, client) -> {
             var requestBody = "url=example.com";
             var response = client.post("/urls", requestBody);
-            assertThat(response.code()).isEqualTo(500);
+            assertThat(response.code()).isEqualTo(200);
         });
     }
     @Test
