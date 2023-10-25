@@ -56,7 +56,7 @@ tasks.test {
         events = mutableSetOf(TestLogEvent.FAILED, TestLogEvent.PASSED, TestLogEvent.SKIPPED)
         showStandardStreams = true
     }
-    finalizedBy("jacocoTestReport") // specifying that it should finalize by 'jacocoTestReport'
+    finalizedBy("jacocoTestReport")
 }
 
 tasks.named<JacocoReport>("jacocoTestReport") {
