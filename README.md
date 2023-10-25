@@ -6,4 +6,4 @@
 <a href="https://codeclimate.com/github/KermittheFroggg/java-project-72/test_coverage"><img src="https://api.codeclimate.com/v1/badges/9e19223f4d639e79fe7c/test_coverage" /></a>
 
 ### CI status:
-[![example workflow](https://github.com/KermittheFroggg/java-project-72/actions/workflows/main.yml/badge.svg)](https://github.com/KermittheFroggg/java-project-72/actions)
+[![Java CI](https://github.com/KermittheFroggg/java-project-72/actions/workflows/build.yml/badge.svg)](https://github.com/KermittheFroggg/java-project-72/actions/workflows/build.yml)
