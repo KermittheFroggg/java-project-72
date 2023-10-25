@@ -7,3 +7,6 @@
 
 ### CI status:
 [![Java CI](https://github.com/KermittheFroggg/java-project-72/actions/workflows/build.yml/badge.svg)](https://github.com/KermittheFroggg/java-project-72/actions/workflows/build.yml)
+
+### Deployed:
+https://java-project-72-bxht.onrender.com
