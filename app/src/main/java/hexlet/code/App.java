@@ -35,6 +35,13 @@ public class App {
         app.start(getPort());
     }
 
+    static String getDatabase() {
+        return System.getenv().getOrDefault(
+                "JDBC_DATABASE_URL",
+                "jdbc:h2:mem:project;DB_CLOSE_DELAY=-1;");
+    }
+
+
     public static String getResourceFileAsString(String fileName) {
         InputStream is = App.class.getClassLoader().getResourceAsStream(fileName);
         if (is != null) {
@@ -48,7 +55,7 @@ public class App {
         JavalinJte.init(createTemplateEngine());
 
         var hikariConfig = new HikariConfig();
-        hikariConfig.setJdbcUrl("jdbc:h2:mem:project;DB_CLOSE_DELAY=-1;");
+        hikariConfig.setJdbcUrl(getDatabase());
 
         var dataSource = new HikariDataSource(hikariConfig);
         var sql = getResourceFileAsString("scheme.sql");

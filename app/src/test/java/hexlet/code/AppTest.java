@@ -52,7 +52,14 @@ public class AppTest {
             assertThat(response.body().string()).contains("https://www.example.com");
         });
     }
-
+    @Test
+    public void testCreateWrongUrl() {
+        JavalinTest.test(app, (server, client) -> {
+            var requestBody = "url=example.com";
+            var response = client.post("/urls", requestBody);
+            assertThat(response.code()).isEqualTo(500);
+        });
+    }
     @Test
     public void testUrlPage() throws SQLException {
         Date date = new Date();
@@ -64,7 +71,17 @@ public class AppTest {
             assertThat(response.code()).isEqualTo(200);
         });
     }
-
+    @Test
+    public void testUrlCheckPage() throws SQLException {
+        Date date = new Date();
+        Timestamp createdAt = new Timestamp(date.getTime());
+        var url = new Url("https://www.example.com", createdAt);
+        UrlRepository.save(url);
+        JavalinTest.test(app, (server, client) -> {
+            var response = client.post("/urls/" + url.getId() + "/checks");
+            assertThat(response.code()).isEqualTo(200);
+        });
+    }
     @Test
     void testUrlNotFound() throws Exception {
         JavalinTest.test(app, (server, client) -> {

@@ -59,22 +59,17 @@ tasks.test {
     finalizedBy("jacocoTestReport") // specifying that it should finalize by 'jacocoTestReport'
 }
 
-// This applies the Jacoco plugin's 'jacocoTestReport' task configuration
 tasks.named<JacocoReport>("jacocoTestReport") {
-    // Specify that the Jacoco report depends on the 'test' task
     dependsOn("test")
 
-    // Access source sets in a way that's compatible with the Kotlin DSL
     val sourceSets = project.extensions.getByName<SourceSetContainer>("sourceSets")
     val mainSourceSet = sourceSets.getByName("main")
 
-    // Configure the class and source data for the report
     sourceDirectories.setFrom(mainSourceSet.allSource.srcDirs)
     classDirectories.setFrom(mainSourceSet.output.classesDirs)
-    executionData.setFrom(file("${buildDir}/jacoco/test.exec")) // Specify where to find execution data
+    executionData.setFrom(file("${buildDir}/jacoco/test.exec"))
 
-    // Configure the reports to be generated
     reports {
-        xml.required.set(true) // XML report
+        xml.required.set(true)
     }
 }
