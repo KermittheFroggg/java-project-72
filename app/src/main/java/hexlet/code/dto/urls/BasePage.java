@@ -3,8 +3,6 @@ package hexlet.code.dto.urls;
 import lombok.Getter;
 import lombok.Setter;
 
-import java.util.List;
-
 @Getter
 @Setter
 

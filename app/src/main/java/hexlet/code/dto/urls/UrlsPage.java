@@ -10,7 +10,7 @@ import java.util.List;
 @AllArgsConstructor
 @Getter
 @Setter
-public class UrlsPage extends BasePage{
+public class UrlsPage extends BasePage {
     private List<Url> urls;
     private int pageNumber;
 }

@@ -22,7 +22,6 @@ import lombok.extern.slf4j.Slf4j;
 import gg.jte.ContentType;
 import gg.jte.TemplateEngine;
 import gg.jte.resolve.ResourceCodeResolver;
-import java.lang.RuntimeException;
 
 @Slf4j
 public class App {

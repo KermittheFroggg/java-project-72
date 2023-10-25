@@ -14,24 +14,9 @@ import org.junit.jupiter.api.Test;
 import io.javalin.Javalin;
 import io.javalin.testtools.JavalinTest;
 
-import hexlet.code.dto.urls.UrlCheckPage;
-import hexlet.code.dto.urls.UrlsPage;
-import hexlet.code.model.Url;
-import hexlet.code.model.UrlCheck;
-import hexlet.code.repository.UrlCheckRepository;
 import hexlet.code.repository.UrlRepository;
-import hexlet.code.utils.NamedRoutes;
-import io.javalin.http.Context;
-import kong.unirest.HttpResponse;
-import kong.unirest.Unirest;
-import org.jsoup.Jsoup;
-import org.jsoup.nodes.Document;
 
-import java.net.MalformedURLException;
-import java.net.URL;
-import java.sql.SQLException;
-import java.sql.Timestamp;
-import java.util.*;
+import java.util.Date;
 public class AppTest {
 
     Javalin app;

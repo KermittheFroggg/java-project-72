@@ -6,6 +6,8 @@ plugins {
     application
     id("com.github.johnrengelman.shadow") version "8.1.1"
     id("io.freefair.lombok") version "8.3"
+    checkstyle
+    jacoco
 }
 
 application {
@@ -56,4 +58,20 @@ tasks.test {
         // showCauses = true
         showStandardStreams = true
     }
+//    finalizedBy(tasks.jacocoTestReport)
 }
+
+//tasks.jacocoTestReport {
+//    reports {
+//        xml.required = true
+//    }
+////}
+////
+////jacoco {
+////    applyTo(tasks.run.get())
+////}
+//
+//tasks.register<JacocoReport>("jacocoTestReport") {
+//    executionData(tasks.run.get())
+//    sourceSets(sourceSets.main.get())
+//}

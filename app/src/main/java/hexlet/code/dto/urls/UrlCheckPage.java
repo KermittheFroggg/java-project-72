@@ -11,7 +11,7 @@ import lombok.Setter;
 @AllArgsConstructor
 @Getter
 @Setter
-public class UrlCheckPage extends BasePage{
+public class UrlCheckPage extends BasePage {
     private List<UrlCheck> urlChecks;
     private Url url;
 }
