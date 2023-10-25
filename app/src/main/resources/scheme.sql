@@ -1,4 +1,4 @@
-DROP TABLE IF EXISTS urls;
+DROP TABLE IF EXISTS urls cascade;
 
 CREATE TABLE urls (
     id serial primary key,
@@ -6,7 +6,7 @@ CREATE TABLE urls (
     created_at TIMESTAMP NOT NULL
 );
 
-DROP TABLE IF EXISTS url_checks;
+DROP TABLE IF EXISTS url_checks cascade;
 
 CREATE TABLE url_checks (
     id serial primary key,
