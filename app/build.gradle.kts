@@ -33,8 +33,9 @@ dependencies {
     implementation("io.javalin:javalin-bundle:5.6.2")
     implementation("io.javalin:javalin-rendering:5.6.2")
 
-    implementation("com.h2database:h2:2.2.220")
     implementation("com.zaxxer:HikariCP:5.0.1")
+    implementation ("org.postgresql:postgresql:42.2.5")
+    implementation ("com.h2database:h2:2.2.220")
 
     implementation("gg.jte:jte:3.0.1")
 
@@ -47,6 +48,7 @@ dependencies {
     testImplementation ("org.mockito:mockito-core:3.+")
     testImplementation("org.assertj:assertj-core:3.24.2")
     testImplementation(platform("org.junit:junit-bom:5.10.0"))
+    testImplementation ("com.h2database:h2:2.2.220")
 }
 
 tasks.test {

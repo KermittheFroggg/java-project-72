@@ -37,13 +37,6 @@ public class App {
         app.start(getPort());
     }
 
-    static String getDatabase() {
-        return System.getenv().getOrDefault(
-                "JDBC_DATABASE_URL",
-                "jdbc:h2:mem:project;DB_CLOSE_DELAY=-1;");
-    }
-
-
     public static String getResourceFileAsString(String fileName) {
         InputStream is = App.class.getClassLoader().getResourceAsStream(fileName);
         if (is != null) {
@@ -55,9 +48,15 @@ public class App {
     }
     public static Javalin getApp() throws IOException, SQLException {
         JavalinJte.init(createTemplateEngine());
-
+        String environment = System.getenv("APP_ENV");
+        String dbUrl;
+        if ("prod".equals(environment)) {
+            dbUrl = System.getenv("JDBC_DATABASE_URL");
+        } else {
+            dbUrl = "jdbc:h2:mem:testdb;DB_CLOSE_DELAY=-1";
+        }
         var hikariConfig = new HikariConfig();
-        hikariConfig.setJdbcUrl(getDatabase());
+        hikariConfig.setJdbcUrl(dbUrl);
 
         var dataSource = new HikariDataSource(hikariConfig);
         var sql = getResourceFileAsString("scheme.sql");

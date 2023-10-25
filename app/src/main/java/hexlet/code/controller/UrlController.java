@@ -87,8 +87,6 @@ public class UrlController {
                 .toList();
         UrlCheckPage page = new UrlCheckPage(urlChecks, url);
         page.setFlash(ctx.consumeSessionAttribute("flash"));
-        System.out.println("\n\n\n???????????"+page.getFlash());
-
         ctx.render("urls/url.jte", Collections.singletonMap("page", page));
     }
 
