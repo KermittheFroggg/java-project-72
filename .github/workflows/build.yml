@@ -7,8 +7,6 @@ on:
 jobs:
   build:
     runs-on: macos-latest
-    env:
-      JDBC_DATABASE_URL: ${{ secrets.JDBC_DATABASE_URL }}
     steps:
       - uses: actions/checkout@v3
       - name: Set up JDK 17

@@ -37,6 +37,25 @@ public class App {
         app.start(getPort());
     }
 
+    public static HikariDataSource getDataSource() {
+        String environment = System.getenv("APP_ENV");
+        HikariConfig config = new HikariConfig();
+        if ("prod".equals(environment)) {
+            String dbUrl = "jdbc:postgresql://"
+                    + System.getenv("DB_HOST")
+                    + ":"
+                    + System.getenv("DB_PORT")
+                    + "/"
+                    + System.getenv("DB_NAME");
+            config.setJdbcUrl(dbUrl);
+            config.setUsername(System.getenv("DB_USER"));
+            config.setPassword(System.getenv("DB_PASSWORD"));
+        } else {
+            config.setJdbcUrl("jdbc:h2:mem:devdb;DB_CLOSE_DELAY=-1;DB_CLOSE_ON_EXIT=FALSE");
+        }
+        return new HikariDataSource(config);
+    }
+
     public static String getResourceFileAsString(String fileName) {
         InputStream is = App.class.getClassLoader().getResourceAsStream(fileName);
         if (is != null) {
@@ -48,17 +67,8 @@ public class App {
     }
     public static Javalin getApp() throws IOException, SQLException {
         JavalinJte.init(createTemplateEngine());
-        String environment = System.getenv("APP_ENV");
-        String dbUrl;
-        if ("prod".equals(environment)) {
-            dbUrl = System.getenv("JDBC_DATABASE_URL");
-        } else {
-            dbUrl = "jdbc:h2:mem:testdb;DB_CLOSE_DELAY=-1";
-        }
-        var hikariConfig = new HikariConfig();
-        hikariConfig.setJdbcUrl(dbUrl);
 
-        var dataSource = new HikariDataSource(hikariConfig);
+        var dataSource = getDataSource();
         var sql = getResourceFileAsString("scheme.sql");
         log.info(sql);
         try (var connection = dataSource.getConnection();
