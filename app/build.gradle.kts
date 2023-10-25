@@ -1,13 +1,16 @@
+import org.gradle.testing.jacoco.tasks.JacocoReport
 import org.gradle.api.tasks.testing.logging.TestExceptionFormat
 import org.gradle.api.tasks.testing.logging.TestLogEvent
+import org.gradle.kotlin.dsl.getByName
+import org.gradle.api.tasks.SourceSetContainer
 
 plugins {
-    id("java")
+    jacoco
+    java
     application
     id("com.github.johnrengelman.shadow") version "8.1.1"
     id("io.freefair.lombok") version "8.3"
     checkstyle
-    jacoco
 }
 
 application {
@@ -44,34 +47,34 @@ dependencies {
     testImplementation ("org.mockito:mockito-core:3.+")
     testImplementation("org.assertj:assertj-core:3.24.2")
     testImplementation(platform("org.junit:junit-bom:5.10.0"))
-
-
 }
 
 tasks.test {
     useJUnitPlatform()
-    // https://technology.lastminute.com/junit5-kotlin-and-gradle-dsl/
     testLogging {
         exceptionFormat = TestExceptionFormat.FULL
         events = mutableSetOf(TestLogEvent.FAILED, TestLogEvent.PASSED, TestLogEvent.SKIPPED)
-        // showStackTraces = true
-        // showCauses = true
         showStandardStreams = true
     }
-//    finalizedBy(tasks.jacocoTestReport)
+    finalizedBy("jacocoTestReport") // specifying that it should finalize by 'jacocoTestReport'
 }
 
-//tasks.jacocoTestReport {
-//    reports {
-//        xml.required = true
-//    }
-////}
-////
-////jacoco {
-////    applyTo(tasks.run.get())
-////}
-//
-//tasks.register<JacocoReport>("jacocoTestReport") {
-//    executionData(tasks.run.get())
-//    sourceSets(sourceSets.main.get())
-//}
+// This applies the Jacoco plugin's 'jacocoTestReport' task configuration
+tasks.named<JacocoReport>("jacocoTestReport") {
+    // Specify that the Jacoco report depends on the 'test' task
+    dependsOn("test")
+
+    // Access source sets in a way that's compatible with the Kotlin DSL
+    val sourceSets = project.extensions.getByName<SourceSetContainer>("sourceSets")
+    val mainSourceSet = sourceSets.getByName("main")
+
+    // Configure the class and source data for the report
+    sourceDirectories.setFrom(mainSourceSet.allSource.srcDirs)
+    classDirectories.setFrom(mainSourceSet.output.classesDirs)
+    executionData.setFrom(file("${buildDir}/jacoco/test.exec")) // Specify where to find execution data
+
+    // Configure the reports to be generated
+    reports {
+        xml.required.set(true) // XML report
+    }
+}
