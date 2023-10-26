@@ -10,6 +10,7 @@ import hexlet.code.utils.NamedRoutes;
 import io.javalin.http.Context;
 import kong.unirest.HttpResponse;
 import kong.unirest.Unirest;
+import kong.unirest.UnirestException;
 import org.jsoup.Jsoup;
 import org.jsoup.nodes.Document;
 
@@ -60,7 +61,7 @@ public class UrlController {
             if (UrlRepository.findByName(urlAfterCheking).isPresent()) {
                 ctx.sessionAttribute("flash", "Страница уже существует");
                 ctx.sessionAttribute("flash-type", "error");
-                ctx.redirect(NamedRoutes.root());
+                ctx.redirect(NamedRoutes.urls());
                 return;
             }
             Date date = new Date();
@@ -93,22 +94,27 @@ public class UrlController {
     public static void checkUrl(Context ctx) throws SQLException {
         Long id = ctx.pathParamAsClass("id", Long.class).get();
         Url url = UrlRepository.find(id).get();
-        HttpResponse<String> response = Unirest.get(url.getName())
-                .asString();
+        try {
+            HttpResponse<String> response = Unirest.get(url.getName())
+                    .asString();
 
-        Document doc = Jsoup.parse(response.getBody());
-        Long statusCode = (long) response.getStatus();
-        String h1 = doc.select("h1").first().text();
-        String title = doc.select("title").first().text();
-        StringBuilder description = new StringBuilder(doc.select("meta[name=description][content]")
-                .attr("content"));
-        Long urlId = id;
-        Date date = new Date();
-        Timestamp createdAt = new Timestamp(date.getTime());
-        UrlCheck urlCheck = new UrlCheck(statusCode, title, h1, description, urlId, createdAt);
-        UrlCheckRepository.save(urlCheck);
-
-        Unirest.shutDown();
-        ctx.redirect(NamedRoutes.showUrl(id));
+            Document doc = Jsoup.parse(response.getBody());
+            Long statusCode = (long) response.getStatus();
+            String h1 = doc.select("h1").first().text();
+            String title = doc.select("title").first().text();
+            StringBuilder description = new StringBuilder(doc.select("meta[name=description][content]")
+                    .attr("content"));
+            Long urlId = id;
+            Date date = new Date();
+            Timestamp createdAt = new Timestamp(date.getTime());
+            UrlCheck urlCheck = new UrlCheck(statusCode, title, h1, description, urlId, createdAt);
+            UrlCheckRepository.save(urlCheck);
+            Unirest.shutDown();
+            ctx.redirect(NamedRoutes.showUrl(id));
+        } catch (UnirestException e) {
+            ctx.sessionAttribute("flash", "Некорректный адрес");
+            ctx.sessionAttribute("flash-type", "error");
+            ctx.redirect(NamedRoutes.showUrl(id));
+        }
     }
 }
