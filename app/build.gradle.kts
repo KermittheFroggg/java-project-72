@@ -62,15 +62,6 @@ tasks.test {
 }
 
 tasks.named<JacocoReport>("jacocoTestReport") {
-    dependsOn("test")
-
-    val sourceSets = project.extensions.getByName<SourceSetContainer>("sourceSets")
-    val mainSourceSet = sourceSets.getByName("main")
-
-    sourceDirectories.setFrom(mainSourceSet.allSource.srcDirs)
-    classDirectories.setFrom(mainSourceSet.output.classesDirs)
-    executionData.setFrom(file("${buildDir}/jacoco/test.exec"))
-
     reports {
         xml.required.set(true)
     }
