@@ -43,10 +43,8 @@ public class UrlController {
         for (Url url : urls) {
             Optional<UrlCheck> lastUrlCheck = urlChecks.stream()
                     .filter(u -> u.getUrlId() == url.getId())
-                    .max(Comparator.comparing(u -> u.getCreatedAt()));
-            if (lastUrlCheck.isPresent()) {
-                url.setLastCheck(lastUrlCheck.get());
-            }
+                    .max(Comparator.comparing(UrlCheck::getCreatedAt));
+            lastUrlCheck.ifPresent(url::setLastCheck);
         }
         UrlsPage page = new UrlsPage(urls, pageNumber);
         page.setFlash(ctx.consumeSessionAttribute("flash"));

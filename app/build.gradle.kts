@@ -49,6 +49,7 @@ dependencies {
     testImplementation("org.assertj:assertj-core:3.24.2")
     testImplementation(platform("org.junit:junit-bom:5.10.0"))
     testImplementation ("com.h2database:h2:2.2.220")
+    testImplementation("com.squareup.okhttp3:mockwebserver:4.11.0")
 }
 
 tasks.test {
