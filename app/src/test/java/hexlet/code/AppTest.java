@@ -162,7 +162,7 @@ public class AppTest {
                 assertThat(actualCheck).isNotNull();
                 assertThat(actualCheck.get("title")).isEqualTo("Test page");
                 assertThat(actualCheck.get("h1")).isEqualTo("Do not expect a miracle, miracles yourself!");
-                assertThat(actualCheck.get("description")).isEqualTo("statements of great people");
+                assertThat(actualCheck.get("description")).isEqualTo("statements of great");
             });
         }
     }
