@@ -49,9 +49,11 @@ public class UrlRepository extends BaseRepository {
             stmt.setString(1, name);
             var resultSet = stmt.executeQuery();
             if (resultSet.next()) {
+                var id = resultSet.getLong("id");
                 var nameInBase = resultSet.getString("name");
                 var createdAt = resultSet.getTimestamp("created_at");
                 Url url = new Url(nameInBase, createdAt);
+                url.setId(id);
                 return Optional.of(url);
             }
             return Optional.empty();
@@ -73,6 +75,17 @@ public class UrlRepository extends BaseRepository {
                 result.add(url);
             }
             return result;
+        }
+    }
+
+    public static boolean existsByName(String name) throws SQLException {
+        var sql = "SELECT * FROM urls WHERE name = ?";
+        try (var conn = dataSource.getConnection();
+             var stmt = conn.prepareStatement(sql)) {
+
+            stmt.setString(1, name);
+            var resultSet = stmt.executeQuery();
+            return resultSet.next();
         }
     }
 }

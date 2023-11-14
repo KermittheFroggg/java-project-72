@@ -51,4 +51,30 @@ public class UrlCheckRepository extends BaseRepository {
             return result;
         }
     }
+
+    public static List<UrlCheck> find(Long urlId) throws SQLException {
+        var sql = "SELECT * FROM url_checks WHERE url_id = ?";
+        try (var conn = dataSource.getConnection();
+             var stmt = conn.prepareStatement(sql)) {
+
+            stmt.setLong(1, urlId);
+            var resultSet = stmt.executeQuery();
+
+            var results = new ArrayList<UrlCheck>();
+            var currentListId = 1L;
+
+            while (resultSet.next()) {
+                var statusCode = resultSet.getLong("status_code");
+                var h1 = resultSet.getString("h1");
+                var title = resultSet.getString("title");
+                var description = resultSet.getString("description");
+                var createdAt = resultSet.getTimestamp("created_at");
+                var urlCheck = new UrlCheck(statusCode, title, h1, new StringBuilder(description),
+                        currentListId, createdAt);
+                currentListId++;
+                results.add(urlCheck);
+            }
+            return results;
+        }
+    }
 }
