@@ -50,7 +50,7 @@ public class App {
             config.setUsername(System.getenv("DB_USER"));
             config.setPassword(System.getenv("DB_PASSWORD"));
         } else {
-            config.setJdbcUrl("jdbc:h2:mem:devdb;DB_CLOSE_DELAY=-1;DB_CLOSE_ON_EXIT=FALSE");
+            config.setJdbcUrl("jdbc:h2:mem:webapp;DB_CLOSE_DELAY=-1;");
         }
         return new HikariDataSource(config);
     }
