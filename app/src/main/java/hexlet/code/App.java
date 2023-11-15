@@ -4,9 +4,10 @@ import hexlet.code.controller.UrlController;
 import hexlet.code.dto.urls.BasePage;
 import hexlet.code.repository.BaseRepository;
 
-import java.io.File;
+import java.io.BufferedReader;
 import java.io.IOException;
-import java.nio.file.Files;
+import java.io.InputStreamReader;
+import java.nio.charset.StandardCharsets;
 import java.sql.SQLException;
 import java.util.Collections;
 import java.util.stream.Collectors;
@@ -56,11 +57,12 @@ public class App {
     }
 
     public static String getResourceFileAsString(String fileName) throws IOException {
-        var schema = App.class.getClassLoader().getResource(fileName);
-        var file = new File(schema.getFile());
-        var sql = Files.lines(file.toPath())
-                .collect(Collectors.joining("\n"));
-        return sql;
+        ClassLoader classLoader = App.class.getClassLoader();
+        try (BufferedReader reader =
+                     new BufferedReader(new InputStreamReader(classLoader.getResourceAsStream(fileName),
+                             StandardCharsets.UTF_8))) {
+            return reader.lines().collect(Collectors.joining("\n"));
+        }
     }
 
     public static Javalin getApp() throws IOException, SQLException {
