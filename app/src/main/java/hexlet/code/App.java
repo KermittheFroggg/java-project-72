@@ -51,7 +51,7 @@ public class App {
             config.setUsername(System.getenv("DB_USER"));
             config.setPassword(System.getenv("DB_PASSWORD"));
         } else {
-            config.setJdbcUrl("jdbc:h2:mem:project");
+            config.setJdbcUrl("jdbc:h2:mem:project;DB_CLOSE_DELAY=-1;");
         }
         return new HikariDataSource(config);
     }
