@@ -11,7 +11,6 @@ public class TestUtils {
 
     public static void addUrl(HikariDataSource dataSource, String url) throws SQLException {
         var sql = "INSERT INTO urls (name, created_at) VALUES (?, '2023-08-27 14:20:19.13')";
-
         try (var conn = dataSource.getConnection();
              var stmt = conn.prepareStatement(sql)) {
             stmt.setString(1, url);

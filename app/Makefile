@@ -1,5 +1,4 @@
-setup:
-	./gradlew wrapper --gradle-version 8.3
+.DEFAULT_GOAL := build-run
 
 clean:
 	./gradlew clean
@@ -7,20 +6,14 @@ clean:
 build:
 	./gradlew clean build
 
-start:
-	APP_ENV=development ./gradlew run
-
 install:
-	./gradlew install
+	./gradlew clean install
 
-start-dist:
-	APP_ENV=prod ./build/install/app/bin/app
+run-dist:
+	./build/install/java-package/bin/java-package
 
-generate-migrations:
-	./gradlew generateMigrations
-
-lint:
-	./gradlew checkstyleMain checkstyleTest
+run:
+	./gradlew run
 
 test:
 	./gradlew test
@@ -28,7 +21,13 @@ test:
 report:
 	./gradlew jacocoTestReport
 
-check-updates:
-	./gradlew dependencyUpdates
+lint:
+	./gradlew checkstyleMain checkstyleTest
+
+update-deps:
+	./gradlew useLatestVersions
+
+
+build-run: build run
 
 .PHONY: build
