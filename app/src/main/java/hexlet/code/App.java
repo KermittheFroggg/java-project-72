@@ -4,9 +4,10 @@ import hexlet.code.controller.UrlController;
 import hexlet.code.dto.urls.BasePage;
 import hexlet.code.repository.BaseRepository;
 
-import java.io.File;
+import java.io.BufferedReader;
+import java.io.InputStreamReader;
 import java.io.IOException;
-import java.nio.file.Files;
+import java.io.InputStream;
 import java.sql.SQLException;
 import java.util.Collections;
 import java.util.stream.Collectors;
@@ -59,10 +60,10 @@ public class App {
         JavalinJte.init(createTemplateEngine());
 
         var dataSource = getDataSource();
-        var schema = App.class.getClassLoader().getResource("schema.sql");
-        var file = new File(schema.getFile());
-        var sql = Files.lines(file.toPath())
+        InputStream schemaStream = App.class.getClassLoader().getResourceAsStream("schema.sql");
+        String sql = new BufferedReader(new InputStreamReader(schemaStream)).lines()
                 .collect(Collectors.joining("\n"));
+
         log.info(sql);
         try (var connection = dataSource.getConnection();
              var statement = connection.createStatement()) {

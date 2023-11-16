@@ -2,6 +2,8 @@ package hexlet.code;
 
 import com.zaxxer.hikari.HikariConfig;
 import com.zaxxer.hikari.HikariDataSource;
+import hexlet.code.model.Url;
+import hexlet.code.repository.UrlRepository;
 import hexlet.code.utils.TestUtils;
 import io.javalin.testtools.JavalinTest;
 import org.junit.jupiter.api.BeforeAll;
@@ -22,6 +24,8 @@ import java.nio.file.Files;
 import java.nio.file.Paths;
 import java.nio.file.Path;
 import java.sql.SQLException;
+import java.sql.Timestamp;
+import java.util.Date;
 import java.util.Map;
 import java.util.stream.Collectors;
 
@@ -44,13 +48,11 @@ class AppTest {
     }
 
     private static String getDatabaseUrl() {
-        var x = System.getenv().getOrDefault("JDBC_DATABASE_URL", "jdbc:h2:mem:project");
-        System.out.println("%" + x);
-        return x;
+        return System.getenv().getOrDefault("JDBC_DATABASE_URL", "jdbc:h2:mem:project");
     }
 
     @BeforeAll
-    private static void beforeAll() throws IOException {
+    public static void beforeAll() throws IOException {
         mockServer = new MockWebServer();
         MockResponse mockedResponse = new MockResponse()
                 .setBody(readFixture("index.html"));
@@ -176,6 +178,18 @@ class AppTest {
                 assertThat(actualCheck.get("title")).isEqualTo("Test page");
                 assertThat(actualCheck.get("h1")).isEqualTo("Do not expect a miracle, miracles yourself!");
                 assertThat(actualCheck.get("description")).isEqualTo("statements of great people");
+            });
+        }
+
+        @Test
+        public void testUrlCheckPage() throws SQLException {
+            Date date = new Date();
+            Timestamp createdAt = new Timestamp(date.getTime());
+            var url = new Url("https://www.example.com", createdAt);
+            UrlRepository.save(url);
+            JavalinTest.test(app, (server, client) -> {
+                var response = client.post("/urls/" + url.getId() + "/checks");
+                assertThat(response.code()).isEqualTo(200);
             });
         }
     }
