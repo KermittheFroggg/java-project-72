@@ -66,6 +66,7 @@ public class UrlRepository extends BaseRepository {
              var stmt = conn.prepareStatement(sql)) {
             var resultSet = stmt.executeQuery();
             var result = new ArrayList<Url>();
+            System.out.println(resultSet);
             while (resultSet.next()) {
                 var id = resultSet.getLong("id");
                 var name = resultSet.getString("name");
@@ -74,6 +75,7 @@ public class UrlRepository extends BaseRepository {
                 url.setId(id);
                 result.add(url);
             }
+            System.out.println(result);
             return result;
         }
     }
