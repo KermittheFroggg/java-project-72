@@ -12,6 +12,10 @@ import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.Nested;
 
+import java.io.BufferedReader;
+import java.io.FileNotFoundException;
+import java.nio.charset.StandardCharsets;
+import java.util.logging.FileHandler;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
@@ -21,7 +25,7 @@ import io.javalin.Javalin;
 import okhttp3.mockwebserver.MockWebServer;
 import okhttp3.mockwebserver.MockResponse;
 
-import java.io.File;
+import java.io.InputStreamReader;
 import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Paths;
@@ -30,6 +34,7 @@ import java.sql.SQLException;
 import java.sql.Timestamp;
 import java.util.Date;
 import java.util.Map;
+import java.util.logging.SimpleFormatter;
 import java.util.stream.Collectors;
 
 class AppTest {
@@ -63,8 +68,10 @@ class AppTest {
                 .setBody(readFixture("index.html"));
         mockServer.enqueue(mockedResponse);
         mockServer.start();
-        LOGGER.setLevel(Level.FINE);
-    }
+        FileHandler fileHandler = new FileHandler("logs.txt");
+        fileHandler.setFormatter(new SimpleFormatter());
+        LOGGER.addHandler(fileHandler);
+        LOGGER.setLevel(Level.FINE);    }
 
     @AfterAll
     public static void afterAll() throws IOException {
@@ -80,9 +87,12 @@ class AppTest {
 
         dataSource = new HikariDataSource(hikariConfig);
 
-        var schema = AppTest.class.getClassLoader().getResource("schema.sql");
-        var file = new File(schema.getFile());
-        var sql = Files.lines(file.toPath())
+        var schemaStream = AppTest.class.getClassLoader().getResourceAsStream("schema.sql");
+        if (schemaStream == null) {
+            throw new FileNotFoundException("Could not find schema.sql");
+        }
+        var sql = new BufferedReader(new InputStreamReader(schemaStream, StandardCharsets.UTF_8))
+                .lines()
                 .collect(Collectors.joining("\n"));
 
         try (var connection = dataSource.getConnection();
@@ -131,8 +141,8 @@ class AppTest {
             JavalinTest.test(app, (server, client) -> {
                 var response = client.get("/urls/" + existingUrl.get("id"));
                 var responseBody = response.body().string();
-                LOGGER.info(responseBody);
-                System.out.println(responseBody);
+//                LOGGER.info(responseBody);
+//                System.out.println(responseBody);
                 assertThat(response.code()).isEqualTo(200);
                 assertThat(responseBody)
                         .contains(existingUrl.get("name").toString())
@@ -151,8 +161,8 @@ class AppTest {
 
                 var response = client.get("/urls");
                 var responseBody = response.body().string();
-                LOGGER.info(responseBody);
-                System.out.println(responseBody);
+//                LOGGER.info(responseBody);
+//                System.out.println(responseBody);
                 assertThat(response.code()).isEqualTo(200);
                 assertThat(responseBody)
                         .contains(inputUrl);

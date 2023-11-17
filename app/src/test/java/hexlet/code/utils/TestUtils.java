@@ -30,7 +30,6 @@ public class TestUtils {
                 result.put("name", resultSet.getString("name"));
                 return result;
             }
-
             return null;
         }
     }

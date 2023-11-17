@@ -1,4 +1,4 @@
-нояб. 17, 2023 10:39:24 AM hexlet.code.AppTest$UrlTest lambda$testShow$1
+нояб. 17, 2023 12:09:54 PM hexlet.code.AppTest$UrlTest lambda$testIndex$0
 INFO: 
 
 <head>
@@ -34,51 +34,47 @@ INFO:
     <main class="flex-grow-1">
         <section>
             <div class="container-lg mt-5">
-                <h1>Сайт https://en.hexlet.io</h1>
-                <table class="table table-bordered table-hover mt-3">
-                    <tbody>
-                    <tr>
-                        <td>ID</td>
-                        <td>1</td>
-                    </tr>
-                    <tr>
-                        <td>Имя</td>
-                        <td>https://en.hexlet.io</td>
-                    </tr>
-                    <tr>
-                        <td>Дата создания</td>
-                        <td>08/27/2023 02:20</td>
-                    </tr>
-                    </tbody>
-                </table>
-                <h2 class="mt-5">Проверки</h2>
-                <form method="post" action="/urls/1/checks">
-                    <button type="submit" class="btn btn-primary">Запустить проверку</button>
-                </form>
+                <h1>Сайты</h1>
                 <table class="table table-bordered table-hover mt-3">
                     <thead>
-                    <th class="col-1">ID</th>
-                    <th class="col-1">Код ответа</th>
-                    <th>title</th>
-                    <th>h1</th>
-                    <th>description</th>
-                    <th class="col-2">Дата проверки</th>
+                    <tr>
+                        <th class="col-1">ID</th>
+                        <th>Имя</th>
+                        <th class="col-2">Последняя проверка</th>
+                        <th class="col-1">Код ответа</th>
+                    </tr>
                     </thead>
                     <tbody>
                     
-                        
-                            <tr>
-                                <td>1</td>
-                                <td>200</td>
-                                <td>en title</td>
-                                <td>en h1</td>
-                                <td>en description</td>
-                                <td>09/27/2021 02:20</td>
-                            </tr>
-                        
+                        <tr>
+                            <td>1</td>
+                            <td>
+                                <a href="/urls/1">https://en.hexlet.io</a>
+                            </td>
+                            
+                                <td class="col-2">
+                                    09/27/2021 02:20
+                                </td>
+                                <td class="col-2">200</td>
+                            
+                        </tr>
                     
+
                     </tbody>
                 </table>
+                <nav aria-label="Page navigation">
+                    <ul class="pagination justify-content-center mt-5">
+                        <li class="page-item">
+                            <a class="page-link" href="/urls?page=0">Previous</a>
+                        </li>
+                        <li class="page-item">
+                            <a class="page-link" href="/urls?page=1">1</a>
+                        </li>
+                        <li class="page-item">
+                            <a class="page-link" href="/urls?page=2">Next</a>
+                        </li>
+                    </ul>
+                </nav>
             </div>
         </section>
     </main>
