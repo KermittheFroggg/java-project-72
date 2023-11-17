@@ -128,7 +128,6 @@ class AppTest {
                 var response = client.get("/urls");
                 var responseBody = response.body().string();
                 LOGGER.info(responseBody);
-                System.out.println(responseBody);
                 assertThat(response.code()).isEqualTo(200);
                 assertThat(responseBody)
                         .contains(existingUrl.get("name").toString())
@@ -141,8 +140,6 @@ class AppTest {
             JavalinTest.test(app, (server, client) -> {
                 var response = client.get("/urls/" + existingUrl.get("id"));
                 var responseBody = response.body().string();
-//                LOGGER.info(responseBody);
-//                System.out.println(responseBody);
                 assertThat(response.code()).isEqualTo(200);
                 assertThat(responseBody)
                         .contains(existingUrl.get("name").toString())
@@ -161,8 +158,6 @@ class AppTest {
 
                 var response = client.get("/urls");
                 var responseBody = response.body().string();
-//                LOGGER.info(responseBody);
-//                System.out.println(responseBody);
                 assertThat(response.code()).isEqualTo(200);
                 assertThat(responseBody)
                         .contains(inputUrl);
@@ -221,6 +216,31 @@ class AppTest {
                 var response = client.post("/urls/" + url.getId() + "/checks");
                 assertThat(response.code()).isEqualTo(200);
             });
+        }
+        @Nested
+        class UrlDeleteTest {
+            @Test
+            void testDelete() {
+                JavalinTest.test(app, (server, client) -> {
+                    var response = client.delete("/urls/1");
+                    assertThat(response.code()).isEqualTo(404);
+                    var getResponse = client.get("/urls/1");
+                    assertThat(getResponse.code()).isEqualTo(200);
+                });
+            }
+        }
+
+        @Nested
+        class UrlDeleteTest2 {
+            @Test
+            void testDelete() {
+                JavalinTest.test(app, (server, client) -> {
+                    var response = client.delete("/urls/" + existingUrl.get("id"));
+                    assertThat(response.code()).isEqualTo(404);
+                    var getResponse = client.get("/urls/" + existingUrl.get("id"));
+                    assertThat(getResponse.code()).isEqualTo(200);
+                });
+            }
         }
     }
 }

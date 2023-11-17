@@ -14,7 +14,7 @@ public class UrlRepository extends BaseRepository {
         try (var conn = dataSource.getConnection();
              var preparedStatement = conn.prepareStatement(sql, Statement.RETURN_GENERATED_KEYS)) {
             preparedStatement.setString(1, url.getName());
-            preparedStatement.setTimestamp(2,  url.getCreatedAt());
+            preparedStatement.setTimestamp(2, url.getCreatedAt());
             preparedStatement.executeUpdate();
             var generatedKeys = preparedStatement.getGeneratedKeys();
             if (generatedKeys.next()) {
@@ -66,7 +66,6 @@ public class UrlRepository extends BaseRepository {
              var stmt = conn.prepareStatement(sql)) {
             var resultSet = stmt.executeQuery();
             var result = new ArrayList<Url>();
-            System.out.println("\n\n\n\n\n%%%%%%%%%%%" + resultSet);
             while (resultSet.next()) {
                 var id = resultSet.getLong("id");
                 var name = resultSet.getString("name");
@@ -75,7 +74,6 @@ public class UrlRepository extends BaseRepository {
                 url.setId(id);
                 result.add(url);
             }
-            System.out.println("\n\n\n\n\n&&&&&&&&&&" + result);
             return result;
         }
     }

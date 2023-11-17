@@ -1,4 +1,4 @@
-нояб. 17, 2023 12:48:57 PM hexlet.code.AppTest$UrlTest lambda$testIndex$0
+нояб. 17, 2023 1:03:06 PM hexlet.code.AppTest$UrlTest lambda$testIndex$0
 INFO: 
 
 <head>
