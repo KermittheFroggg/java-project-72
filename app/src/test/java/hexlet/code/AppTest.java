@@ -116,8 +116,11 @@ class AppTest {
         void testIndex() {
             JavalinTest.test(app, (server, client) -> {
                 var response = client.get("/urls");
+                var responseBody = response.body().string();
+                LOGGER.info(responseBody);
+                System.out.println(responseBody);
                 assertThat(response.code()).isEqualTo(200);
-                assertThat(response.body().string())
+                assertThat(responseBody)
                         .contains(existingUrl.get("name").toString())
                         .contains(existingUrlCheck.get("status_code").toString());
             });
