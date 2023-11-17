@@ -40,6 +40,7 @@ public class App {
     public static HikariDataSource getDataSource() {
         String env = System.getenv("ENV");
         String dbUrl;
+        HikariConfig config = new HikariConfig();
         if ("PROD".equals(env)) {
             dbUrl = "jdbc:postgresql://"
                     + System.getenv("DB_HOST")
@@ -47,11 +48,11 @@ public class App {
                     + System.getenv("DB_PORT")
                     + "/"
                     + System.getenv("DB_NAME");
+            config.setUsername(System.getenv("DB_USER"));
+            config.setPassword(System.getenv("DB_PASSWORD"));
         } else {
             dbUrl = System.getenv().getOrDefault("JDBC_DATABASE_URL", "jdbc:h2:mem:project;DB_CLOSE_DELAY=-1;");
         }
-
-        HikariConfig config = new HikariConfig();
         config.setJdbcUrl(dbUrl);
         return new HikariDataSource(config);
     }
