@@ -53,7 +53,7 @@ public class App {
 
         HikariConfig config = new HikariConfig();
         config.setJdbcUrl(dbUrl);
-        hikariConfig.setMaximumPoolSize(5);
+        config.setMaximumPoolSize(5);
         return new HikariDataSource(config);
     }
 
