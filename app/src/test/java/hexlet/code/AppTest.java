@@ -121,6 +121,7 @@ class AppTest {
         void testShow() {
             JavalinTest.test(app, (server, client) -> {
                 var response = client.get("/urls/" + existingUrl.get("id"));
+                System.out.println(response.body().string())
                 assertThat(response.code()).isEqualTo(200);
                 assertThat(response.body().string())
                         .contains(existingUrl.get("name").toString())
@@ -141,6 +142,11 @@ class AppTest {
                 assertThat(response.code()).isEqualTo(200);
                 assertThat(response.body().string())
                         .contains(inputUrl);
+                try {
+                    Thread.sleep(1000); // 1000 milliseconds = 1 second
+                } catch (InterruptedException e) {
+                    e.printStackTrace();
+                }
 
                 var actualUrl = TestUtils.getUrlByName(dataSource, inputUrl);
                 assertThat(actualUrl).isNotNull();
