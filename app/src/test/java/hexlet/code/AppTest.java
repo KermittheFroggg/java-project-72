@@ -11,6 +11,7 @@ import org.junit.jupiter.api.AfterAll;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.Nested;
+import org.junit.jupiter.api.AfterEach;
 
 import java.io.BufferedReader;
 import java.io.FileNotFoundException;
@@ -71,7 +72,8 @@ class AppTest {
         FileHandler fileHandler = new FileHandler("logs.txt");
         fileHandler.setFormatter(new SimpleFormatter());
         LOGGER.addHandler(fileHandler);
-        LOGGER.setLevel(Level.FINE);    }
+        LOGGER.setLevel(Level.FINE);
+    }
 
     @AfterAll
     public static void afterAll() throws IOException {
@@ -107,6 +109,13 @@ class AppTest {
 
         TestUtils.addUrlCheck(dataSource, (long) existingUrl.get("id"));
         existingUrlCheck = TestUtils.getUrlCheck(dataSource, (long) existingUrl.get("id"));
+    }
+
+    @AfterEach
+    public void tearDown() {
+        if (dataSource != null) {
+            dataSource.close();
+        }
     }
 
     @Nested
@@ -217,6 +226,7 @@ class AppTest {
                 assertThat(response.code()).isEqualTo(200);
             });
         }
+
         @Nested
         class UrlDeleteTest {
             @Test
