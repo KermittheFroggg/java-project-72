@@ -28,6 +28,7 @@ public class TestUtils {
             if (resultSet.next()) {
                 result.put("id", resultSet.getLong("id"));
                 result.put("name", resultSet.getString("name"));
+                System.out.println("\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n%%%%%%%%%%%%%%%%%%%%%%%%" + result);
                 return result;
             }
 
