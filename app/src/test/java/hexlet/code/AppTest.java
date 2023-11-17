@@ -12,6 +12,9 @@ import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.Nested;
 
+import java.util.logging.Level;
+import java.util.logging.Logger;
+
 import static org.assertj.core.api.Assertions.assertThat;
 
 import io.javalin.Javalin;
@@ -37,6 +40,8 @@ class AppTest {
     private Map<String, Object> existingUrlCheck;
     private HikariDataSource dataSource;
 
+    private static final Logger LOGGER = Logger.getLogger(AppTest.class.getName());
+
     private static Path getFixturePath(String fileName) {
         return Paths.get("src", "test", "resources", "fixtures", fileName)
                 .toAbsolutePath().normalize();
@@ -58,6 +63,7 @@ class AppTest {
                 .setBody(readFixture("index.html"));
         mockServer.enqueue(mockedResponse);
         mockServer.start();
+        LOGGER.setLevel(Level.FINE);
     }
 
     @AfterAll
@@ -121,9 +127,11 @@ class AppTest {
         void testShow() {
             JavalinTest.test(app, (server, client) -> {
                 var response = client.get("/urls/" + existingUrl.get("id"));
-                System.out.println(response.body().string())
+                var responseBody = response.body().string();
+                LOGGER.info(responseBody);
+                System.out.println(responseBody);
                 assertThat(response.code()).isEqualTo(200);
-                assertThat(response.body().string())
+                assertThat(responseBody)
                         .contains(existingUrl.get("name").toString())
                         .contains(existingUrlCheck.get("status_code").toString());
             });
@@ -139,8 +147,11 @@ class AppTest {
                 assertThat(client.post("/urls", requestBody).code()).isEqualTo(200);
 
                 var response = client.get("/urls");
+                var responseBody = response.body().string();
+                LOGGER.info(responseBody);
+                System.out.println(responseBody);
                 assertThat(response.code()).isEqualTo(200);
-                assertThat(response.body().string())
+                assertThat(responseBody)
                         .contains(inputUrl);
                 try {
                     Thread.sleep(1000); // 1000 milliseconds = 1 second
